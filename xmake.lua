@@ -1,0 +1,15 @@
+set_project("LearnVulkan")
+set_arch("x64")
+set_warnings("all")
+set_languages("c++17")
+
+add_rules("mode.debug", "mode.release")
+add_requires("vulkansdk", "glfw", "glm", "stb")
+
+target("learn_vulkan")
+    set_default(true)
+    set_kind("binary")
+    add_headerfiles("source/*.h")
+    add_headerfiles("source/*.hpp")
+    add_files("source/*.cpp")
+    add_packages("vulkansdk", "glfw", "glm", "stb")
