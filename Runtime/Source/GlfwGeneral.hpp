@@ -64,3 +64,15 @@ inline void SetWindowTitleWithFPS()
         frameCount = 0; //清空帧数计数器
     }
 }
+
+inline void MakeWindowFullScreen()
+{
+    const GLFWvidmode* pMode = glfwGetVideoMode(pMonitor);
+    glfwSetWindowMonitor(pWindow, pMonitor, 0, 0, pMode->width, pMode->height, pMode->refreshRate);
+}
+
+inline void MakeWindowWindowed(VkOffset2D position, VkExtent2D size)
+{
+    const GLFWvidmode* pMode = glfwGetVideoMode(pMonitor);
+    glfwSetWindowMonitor(pWindow, pMonitor,  position.x, position.y, pMode->width, pMode->height, pMode->refreshRate);
+}
