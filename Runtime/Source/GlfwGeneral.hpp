@@ -11,34 +11,56 @@ GLFWmonitor* pMonitor;
 const char* windowTitle = "LearnVulkan";
 
 
-bool InitializeWindow(VkExtent2D size, bool fullScreen = false, bool isResizable = true, bool limitFrameRate = true)
+inline bool InitializeWindow(VkExtent2D size, bool fullScreen = false, bool isResizable = true,
+                             bool limitFrameRate = true)
 {
-
-    glfwInit();
-
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Vulkan window", nullptr, nullptr);
-
-    uint32_t extensionCount = 0;
-    vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
-
-    std::cout << extensionCount << " extensions supported\n";
-
-    glm::mat4 matrix;
-    glm::vec4 vec;
-    auto test = matrix * vec;
-
-    while(!glfwWindowShouldClose(window)) {
-        glfwPollEvents();
+    if (!glfwInit())
+    {
+        std::cout << std::format("[ InitializeWindow ] ERROR\nFailed to initialize GLFW!\n");
+        return false;
     }
 
-    glfwDestroyWindow(window);
 
-    glfwTerminate();
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+    glfwWindowHint(GLFW_RESIZABLE, isResizable);
 
+    pMonitor = glfwGetPrimaryMonitor();
+    const GLFWvidmode* pMode = glfwGetVideoMode(pMonitor);
+    pWindow = fullScreen
+                  ? glfwCreateWindow(pMode->width, pMode->height, windowTitle, pMonitor, nullptr)
+                  : glfwCreateWindow(size.width, size.height, windowTitle, nullptr, nullptr);
+
+    if (!pWindow)
+    {
+        std::cout << std::format("[ InitializeWindow ] ERROR\nFailed to create GLFW window!\n");
+        glfwTerminate();
+        return false;
+    }
     return true;
 }
 
-void TerminateWindow()
+inline void TerminateWindow()
 {
+    glfwTerminate();
+}
+
+inline void SetWindowTitleWithFPS()
+{
+    static double currentTime = 0.0; //初始化局部静态变量
+    static double lastTime = glfwGetTime();
+    static double timeDiff;
+    static int frameCount = -1;
+    static std::stringstream ss;
+
+    currentTime = glfwGetTime(); //更新当前时间和帧数
+    frameCount++;
+    if ((timeDiff = currentTime - lastTime) >= 1)
+    {
+        ss.precision(1);
+        ss << windowTitle << "     " << std::fixed << frameCount / timeDiff << " FPS";
+        glfwSetWindowTitle(pWindow, ss.str().c_str()); //当前时间差超过1s更新标题
+        ss.str("");
+        lastTime = glfwGetTime(); //更新上一帧时间
+        frameCount = 0; //清空帧数计数器
+    }
 }
