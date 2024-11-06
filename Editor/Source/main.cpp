@@ -2,18 +2,15 @@
 #include <GlfwGeneral.hpp>
 
 int main() {
-
-    if(!InitializeWindow({1280,720}))
-    {
+    if (!initialize_window({ 1280, 720 })) {
         return -1;
     }
 
-    while (!glfwWindowShouldClose(pWindow))
-    {
+    while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
-        SetWindowTitleWithFPS();
+        set_window_title_with_fps();
     }
-    
-    TerminateWindow();
+
+    terminate_window();
     return 0;
 }
