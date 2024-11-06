@@ -1,7 +1,6 @@
 set_project("LearnVulkan")
 set_arch("x64")
-set_warnings("all")
-set_languages("c++23")
+set_languages("c++20")
 
 add_rules("mode.debug", "mode.release")
 add_rules("plugin.vsxmake.autoupdate")
