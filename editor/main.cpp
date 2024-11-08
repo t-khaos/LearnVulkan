@@ -1,5 +1,5 @@
 
-#include <GlfwGeneral.hpp>
+#include <rhi/glfw_general.hpp>
 
 int main() {
     if (!initialize_window({ 1280, 720 })) {

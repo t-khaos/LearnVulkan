@@ -1,5 +1,5 @@
 #pragma once
-#include "VKBase.h"
+#include <rhi/vk_base.h>
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
@@ -30,11 +30,13 @@ inline bool initialize_window(
     const GLFWvidmode* mode = glfwGetVideoMode(monitor);
     window = full_screen
         ? glfwCreateWindow(mode->width, mode->height, window_title, monitor, nullptr)
-        : glfwCreateWindow(static_cast<int>(size.width),
-                           static_cast<int>(size.height),
-                           window_title,
-                           nullptr,
-                           nullptr);
+        : glfwCreateWindow(
+              static_cast<int>(size.width),
+              static_cast<int>(size.height),
+              window_title,
+              nullptr,
+              nullptr
+          );
 
     if (!window) {
         std::cout << std::format("[ InitializeWindow ] ERROR\nFailed to create GLFW window!\n");
